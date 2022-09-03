@@ -15,24 +15,24 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  public getUser(): Observable<User[] | HttpErrorResponse> {
+  public getUser(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiHost}/user/list`);
   }
 
-  public addUser(formData: FormData): Observable<User | HttpErrorResponse> {
+  public addUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.apiHost}/user/add`, formData);
   }
 
-  public updateUser(formData: FormData): Observable<User | HttpErrorResponse> {
+  public updateUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.apiHost}/user/update`, formData);
   }
 
-  public updateProfileImage(formData: FormData): Observable<HttpEvent<any> | HttpErrorResponse> {
+  public updateProfileImage(formData: FormData): Observable<HttpEvent<any>> {
     return this.http.post<User>(`${this.apiHost}/user/updateProfileImage`, formData,
       {reportProgress: true, observe: 'events'});
   }
 
-  public deleteUser(userId: number): Observable<ICustomHttpResponse | HttpErrorResponse> {
+  public deleteUser(userId: number): Observable<ICustomHttpResponse> {
     return this.http.delete<ICustomHttpResponse>(`${this.apiHost}/user/delete/${userId}`);
   }
 

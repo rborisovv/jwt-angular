@@ -6,7 +6,7 @@ import {NotificationTypeEnum} from "../enum/notification-type.enum";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  message: string = 'You need to be logged in to access this page'.toUpperCase();
+  message: string = 'You need to be logged in to access this page';
 
   constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {
   }

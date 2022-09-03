@@ -18,12 +18,11 @@ export class AuthService {
 
   }
 
-  public login(user: User): Observable<HttpResponse<any> | HttpErrorResponse> {
-    return this.http.post<HttpResponse<any> | HttpErrorResponse>
-    (`${this.apiHost}/user/login`, user, {observe: 'response'});
+  public login(user: User): Observable<HttpResponse<User>> {
+    return this.http.post<User>(`${this.apiHost}/user/login`, user, {observe: 'response'});
   }
 
-  public register(user: User): Observable<User | HttpErrorResponse> {
+  public register(user: User): Observable<User> {
     return this.http.post<User>(`${this.apiHost}/user/register`, user);
   }
 
@@ -40,7 +39,7 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  public addUserToLocalCache(user: User): void {
+  public addUserToLocalCache(user: User | null): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
@@ -59,8 +58,8 @@ export class AuthService {
 
   public isLoggedIn(): boolean {
     this.loadToken();
-    const subject = this.jwtService.decodeToken(this.token).sub;
     if (this.token != null && this.token !== '') {
+      const subject = this.jwtService.decodeToken(this.token).sub;
       if (subject != null || '') {
         if (!this.jwtService.isTokenExpired(this.token)) {
           this.loggedInUsername = subject;

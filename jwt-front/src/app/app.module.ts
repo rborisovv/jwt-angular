@@ -13,6 +13,8 @@ import {NotificationService} from "./service/notification.service";
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { UserComponent } from './pages/user/user.component';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { UserComponent } from './pages/user/user.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NotificationModule
+    NotificationModule,
+    FontAwesomeModule,
+    FormsModule
   ],
   providers: [NotificationService, AuthGuard, AuthService, UserService, {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
