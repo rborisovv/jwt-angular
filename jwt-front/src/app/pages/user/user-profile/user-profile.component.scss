@@ -1,0 +1,31 @@
+.logout-btn {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 200px;
+}
+
+.logout-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.logout-btn-card, .permissions-card {
+  width: 70%;
+}
+
+.permissions-card {
+  text-align: center;
+}
+
+.camera-icon {
+  margin-right: 7px;
+}
+
+.img-wrapper {
+  margin-bottom: 7px !important;
+}
+
+.photo-btn-wrapper {
+  text-align: left !important;
+}

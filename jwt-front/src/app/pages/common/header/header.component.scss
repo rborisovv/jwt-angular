@@ -1,0 +1,26 @@
+.nav-users-btn {
+  background: #E8E8E8 !important;
+  color: var(--bs-nav-pills-link-active-bg) !important;
+}
+
+nav {
+  padding: 12px;
+  width: 93%;
+}
+
+div.nav {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.nav-btn-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.user-icon {
+  background: #0d6efd !important;
+  color: #fff;
+}

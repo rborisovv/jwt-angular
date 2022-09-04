@@ -3,9 +3,8 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../service/auth.service";
 import {NotificationService} from "../../service/notification.service";
 import {faKey, faSpinner, faUser} from "@fortawesome/free-solid-svg-icons";
-import {User} from "../../service/model/user";
+import {User} from "../../model/user";
 import {Subscription} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import {NotificationTypeEnum} from "../../enum/notification-type.enum";
 import {HeaderTypeEnum} from "../../enum/header-type.enum";
 
@@ -37,9 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   public onLogin(user: User): void {
     this.showLoading = true;
 
-    this.subscriptions.push(this.authService.login(user).subscribe({
+    const subscription = this.authService.login(user).subscribe({
         next: response => {
-          console.log(response.headers)
           const token = response.headers.get(HeaderTypeEnum.JWT_TOKEN);
           this.authService.saveToken(<string>token);
           this.authService.addUserToLocalCache(response.body);
@@ -51,11 +49,12 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.showLoading = false;
         }
       }
-    ))
+    );
+    this.subscriptions.push(subscription);
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   private sendErrorNotification(notificationType: NotificationTypeEnum, message: string) {

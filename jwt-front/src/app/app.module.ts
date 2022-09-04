@@ -15,13 +15,19 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UserComponent } from './pages/user/user.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {FormsModule} from "@angular/forms";
+import { UserUpdateComponent } from './pages/user/user-update/user-update.component';
+import { UserProfileComponent } from './pages/user/user-profile/user-profile.component';
+import { HeaderComponent } from './pages/common/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    UserComponent
+    UserComponent,
+    UserUpdateComponent,
+    UserProfileComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

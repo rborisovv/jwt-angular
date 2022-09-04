@@ -6,7 +6,7 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #60a3bc !important;
+  //background: #60a3bc !important;
 }
 .user_card {
   height: 500px;
@@ -50,7 +50,7 @@ html {
 }
 .login_btn:focus {
   box-shadow: none !important;
-  outline: 0px !important;
+  outline: 0 !important;
 }
 .login_container {
   padding: 0 2rem;
@@ -68,4 +68,8 @@ html {
 }
 .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: #1B4F72!important;
+}
+
+app-header nav{
+  background: #E8E8E8 !important;
 }

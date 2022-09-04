@@ -5,7 +5,8 @@ export class User {
   public lastName: string;
   public username: string;
   public email: string;
-  public loginDateDisplay!: Date;
+  public lastLoginDateDisplay!: Date;
+  public lastLoginDate!: Date;
   public joinDate!: Date;
   public profileImageUrl!: string;
   public active: boolean;

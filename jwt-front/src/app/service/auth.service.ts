@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
 import {environment} from "../../environments/environment";
 
 import {Observable} from "rxjs";
-import {User} from "./model/user";
+import {User} from "../model/user";
 
 @Injectable()
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
     this.loggedInUsername = null;
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    localStorage.removeItem('users');
+    localStorage.removeItem('user');
   }
 
   public saveToken(token: string) {
@@ -46,6 +46,14 @@ export class AuthService {
   public getUserFromLocalCache(): User {
     // @ts-ignore
     return JSON.parse(localStorage.getItem('user'));
+  }
+
+  public getUsersFromLocalCache(): User[] | null {
+    const users: User[] = JSON.parse(<string>localStorage.getItem('users'));
+    if (localStorage.getItem('users')) {
+      return users;
+    }
+    return null;
   }
 
   public loadToken(): void {
