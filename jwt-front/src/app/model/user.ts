@@ -9,8 +9,8 @@ export class User {
   public lastLoginDate!: Date;
   public joinDate!: Date;
   public profileImageUrl!: string;
-  public active: boolean;
-  public nonLocked: boolean;
+  public isActive: boolean;
+  public isNonLocked: boolean;
   public role: string;
   public authorities: [];
 
@@ -20,8 +20,8 @@ export class User {
     this.lastName = '';
     this.username = '';
     this.email = '';
-    this.active = false;
-    this.nonLocked = false;
+    this.isActive = false;
+    this.isNonLocked = false;
     this.role = '';
     this.authorities = [];
   }

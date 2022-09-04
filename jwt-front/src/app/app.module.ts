@@ -15,9 +15,9 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UserComponent } from './pages/user/user.component';
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {FormsModule} from "@angular/forms";
-import { UserUpdateComponent } from './pages/user/user-update/user-update.component';
 import { UserProfileComponent } from './pages/user/user-profile/user-profile.component';
 import { HeaderComponent } from './pages/common/header/header.component';
+import { UserModalComponent } from './pages/user/user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +25,9 @@ import { HeaderComponent } from './pages/common/header/header.component';
     LoginComponent,
     RegisterComponent,
     UserComponent,
-    UserUpdateComponent,
     UserProfileComponent,
-    HeaderComponent
+    HeaderComponent,
+    UserModalComponent
   ],
   imports: [
     BrowserModule,

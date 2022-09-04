@@ -1,0 +1,86 @@
+<div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center"
+            id="exampleModalLongTitle">{{selectedUser.firstName}} {{selectedUser.lastName}}</h5>
+        <a type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-sm-auto">
+                  <div class="mx-auto" style="width: 120px;">
+                    <div class="d-flex justify-content-center align-items-center rounded">
+                      <img class="rounded" height="120" width="120" src="{{selectedUser.profileImageUrl}}" alt="">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-info-wrapper col d-flex flex-column flex-sm-row justify-content-between">
+                  <div class="text-left text-sm-left mb-sm-0">
+                    <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser.firstName}} {{selectedUser.lastName}}</h6>
+                    <p class="mb-1">{{selectedUser.username}}</p>
+                    <div class="">Status:
+                      <span *ngIf="selectedUser.isNonLocked && selectedUser.isActive" class="badge badge-success"
+                            style="color: green;">Active</span>
+                      <span *ngIf="!selectedUser.isNonLocked || !selectedUser.isActive" class="badge badge-danger"
+                            style="color: red;">Inactive</span>
+                    </div>
+                    <div class="text-muted"><small>Last Login: {{selectedUser.lastLoginDate}}</small>
+                    </div>
+                  </div>
+                  <div class="text-center text-sm-right">
+                    <div class="text-muted"><small>Joined {{selectedUser.joinDate}}</small></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"></li>
+              <li class="list-group-item">
+                {{selectedUser.username}}
+                <fa-icon [icon]="faIdBadge"></fa-icon>
+              </li>
+              <li class="list-group-item">
+                {{selectedUser.email}}
+                <fa-icon [icon]="faEnvelope"></fa-icon>
+              </li>
+              <li class="list-group-item">
+                {{selectedUser.role.toString()}}
+                <fa-icon [icon]="faUserSecret"></fa-icon>
+              <li class="list-group-item">
+                {{selectedUser.authorities.join(', ')}}
+                <fa-icon [icon]="faShieldAlt"></fa-icon>
+              </li>
+              <li class="list-group-item">
+                    <span *ngIf="!selectedUser.isNonLocked || !selectedUser.isActive">
+                      AccountStatus
+                      </span>
+                <span *ngIf="!selectedUser.isNonLocked || !selectedUser.isActive">
+                      <fa-icon [icon]="faLock" style="color: red;"></fa-icon>
+                      Account Locked
+                    </span>
+
+                <span *ngIf="selectedUser.isNonLocked && selectedUser.isActive">
+                  Account Status
+                  </span>
+                <span *ngIf="selectedUser.isNonLocked && selectedUser.isActive">
+                    <fa-icon [icon]="faUnlock" style="color: green;"></fa-icon>
+                    Unlocked
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

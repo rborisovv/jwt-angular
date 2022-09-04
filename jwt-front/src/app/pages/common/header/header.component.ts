@@ -9,6 +9,7 @@ import {faCogs, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 export class HeaderComponent implements OnInit {
 
   @Input() username: string = '';
+  @Input() navStyle: string = '';
 
   faUsers = faUsers;
   faUser = faUser;

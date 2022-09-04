@@ -1,3 +1,4 @@
+<app-header [username]="username"></app-header>
 <div class="container-xl">
   <div class="table-responsive">
     <div class="table-wrapper">
@@ -29,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let user of users; index as id">
+        <tr (click)="onSelectUser(user)" *ngFor="let user of users; index as id">
           <td>{{id + 1}}</td>
           <td><a href="#"><img src="{{user.profileImageUrl}}" class="avatar" alt="Avatar"></a></td>
           <td>{{user.firstName}} {{user.lastName}}</td>
@@ -51,5 +52,10 @@
         </tbody>
       </table>
     </div>
+    <button [hidden]="true" type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal"></button>
+    <button [hidden]="true" type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal"></button>
   </div>
 </div>
+
+
+<app-user-modal [selectedUser]="selectedUser"></app-user-modal>

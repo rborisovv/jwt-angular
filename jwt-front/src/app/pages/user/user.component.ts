@@ -19,6 +19,7 @@ import {UserService} from "../../service/user.service";
 import {NotificationService} from "../../service/notification.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
   selector: 'app-user',
@@ -39,12 +40,23 @@ export class UserComponent implements OnInit, OnDestroy {
   faExcel = faFileExcel;
 
   public users: User[];
+  public username: string;
+  public selectedUser: User = new User();
   private subscriptions: Subscription[];
+  private jwtService: JwtHelperService;
 
-  constructor(private router: Router, private authenticationService: AuthService,
+  constructor(private router: Router, private authService: AuthService,
               private userService: UserService, private notificationService: NotificationService) {
     this.users = this.fetchUsers();
     this.subscriptions = [];
+    this.jwtService = new JwtHelperService();
+    this.username = this.obtainSubjectFromToken();
+  }
+
+  private obtainSubjectFromToken(): string {
+    this.authService.loadToken();
+    const token: string = this.authService.getToken();
+    return this.jwtService.decodeToken(token).sub;
   }
 
   ngOnInit(): void {
@@ -54,6 +66,13 @@ export class UserComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
+  public onSelectUser(selectedUser: User): void {
+    this.selectedUser = selectedUser;
+    // @ts-ignore
+    document.getElementById('openUserInfo').click();
+  }
+
 
   private fetchUsers(): User[] {
     const users: User[] = [];

@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="nav nav-pills">
         <div class="nav-btn-wrapper">
-        <a class="nav-users-btn nav-item nav-link active ml-1" data-toggle="tab">
+        <a class="nav-users-btn nav-item nav-link active ml-1" data-toggle="tab" routerLink="/user/management">
           <fa-icon [icon]="faUsers"></fa-icon>
           Users
         </a>
@@ -24,7 +24,7 @@
           Settings
         </a>
         </div>
-        <a class="user-icon nav-item nav-link move-right mr-3" data-toggle="tab">
+        <a routerLink="/user/profile" class="user-icon nav-item nav-link move-right mr-3" data-toggle="tab">
           Welcome, {{username}}
           <fa-icon [icon]="faUser"></fa-icon>
         </a>
