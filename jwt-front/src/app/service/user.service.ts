@@ -41,7 +41,7 @@ export class UserService {
   }
 
   public deleteUserByUsername(username: string): Observable<ICustomHttpResponse> {
-    return this.http.delete<ICustomHttpResponse>(`${this.apiHost}/user/delete/${username}`)
+    return this.http.delete<ICustomHttpResponse>(`${this.apiHost}/user/deleteByUsername/${username}`);
   }
 
   public addUsersToLocalCache(users: User[]): void {

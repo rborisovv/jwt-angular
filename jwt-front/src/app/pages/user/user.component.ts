@@ -20,6 +20,7 @@ import {NotificationService} from "../../service/notification.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {AuthoritiesEnum} from "../../enum/authorities.enum";
 
 @Component({
   selector: 'app-user',
@@ -42,6 +43,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public users: User[];
   public username: string;
   public selectedUser: User = new User();
+  public updateUser: User = new User();
   private subscriptions: Subscription[];
   private jwtService: JwtHelperService;
 
@@ -54,17 +56,34 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   private obtainSubjectFromToken(): string {
-    this.authService.loadToken();
     const token: string = this.authService.getToken();
     return this.jwtService.decodeToken(token).sub;
   }
 
   ngOnInit(): void {
-
+    this.authService.loadToken();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  public isOwner(): boolean {
+    const token: string = this.authService.getToken();
+    let jwtData = token.split('.')[1];
+    let decodedJwtJsonData = window.atob(jwtData);
+    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    return decodedJwtData.Authorities.find((auth: string) => auth === AuthoritiesEnum.DELETE.toString());
+  }
+
+  public isAdmin(): boolean {
+    const token: string = this.authService.getToken();
+    let jwtData = token.split('.')[1];
+    let decodedJwtJsonData = window.atob(jwtData);
+    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+
+    return decodedJwtData.Authorities.find((auth: string) => auth === AuthoritiesEnum.UPDATE.toString());
   }
 
   public onSelectUser(selectedUser: User): void {
@@ -73,6 +92,24 @@ export class UserComponent implements OnInit, OnDestroy {
     document.getElementById('openUserInfo').click();
   }
 
+  public onDelete(username: string): void {
+    const subscription: Subscription = this.userService.deleteUserByUsername(username).subscribe({
+      next: () => {
+        this.notificationService.notify(NotificationTypeEnum.SUCCESS, `User with username ${username} successfully deleted!`);
+        window.location.reload();
+      }, error: () => {
+        this.notificationService.notify(NotificationTypeEnum.ERROR, 'There was a problem executing that request!');
+      }
+    });
+
+    this.subscriptions.push(subscription);
+  }
+
+  public onUpdate(user: User): void {
+    this.updateUser = user;
+    // @ts-ignore
+    document.getElementById('openUserEdit').click();
+  }
 
   private fetchUsers(): User[] {
     const users: User[] = [];

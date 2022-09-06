@@ -18,6 +18,7 @@ import {FormsModule} from "@angular/forms";
 import { UserProfileComponent } from './pages/user/user-profile/user-profile.component';
 import { HeaderComponent } from './pages/common/header/header.component';
 import { UserModalComponent } from './pages/user/user-modal/user-modal.component';
+import { UserUpdateComponent } from './pages/user/user-update/user-update.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UserModalComponent } from './pages/user/user-modal/user-modal.component
     UserComponent,
     UserProfileComponent,
     HeaderComponent,
-    UserModalComponent
+    UserModalComponent,
+    UserUpdateComponent
   ],
   imports: [
     BrowserModule,

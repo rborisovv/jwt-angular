@@ -39,8 +39,13 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-  public addUserToLocalCache(user: User | null): void {
+  public addUserToLocalCache(user: User): void {
+    console.log(user);
     localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  public removeUserFromLocalCache(): void {
+    localStorage.removeItem('user');
   }
 
   public getUserFromLocalCache(): User {

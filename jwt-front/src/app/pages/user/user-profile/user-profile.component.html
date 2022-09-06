@@ -23,11 +23,11 @@
                     </div>
                     <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
                       <div class="text-center text-sm-left mb-2 mb-sm-0">
-                        <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap"></h4>
+                        <h4 class="text-left pt-sm-2 pb-1 mb-0 text-nowrap">{{user.firstName}} {{user.lastName}}</h4>
                         <p class="mb-0"></p>
                         <div class="text-muted"><small>Last login: {{user.lastLoginDate}}</small></div>
                         <div class="mt-2 photo-btn-wrapper">
-                          <button class="btn btn-primary" type="button">
+                          <button (click)="updateProfileImage()" class="btn btn-primary" type="button">
                             <fa-icon [icon]="faCamera" class="camera-icon"></fa-icon>
                             <span>Change Photo</span>
                           </button>
@@ -40,7 +40,7 @@
                   </div>
                   <div class="tab-content pt-3">
                     <div class="tab-pane active">
-                      <form #profileUserForm="ngForm" class="form"
+                      <form #profileUserForm="ngForm" (ngSubmit)="onUpdateUser(profileUserForm.value)"  class="form"
                             novalidate>
                         <div class="row">
                           <div class="col">
@@ -48,14 +48,14 @@
                               <div class="col">
                                 <div class="form-group">
                                   <label>First Name</label>
-                                  <input [value]="user.firstName" type="text" name="firstName" required
+                                  <input #firstNameInput="ngModel" [(ngModel)]="user.firstName" type="text" name="firstName" ngModel required
                                          class="form-control">
                                 </div>
                               </div>
                               <div class="col">
                                 <div class="form-group">
                                   <label>Last Name</label>
-                                  <input [value]="user.lastName" type="text" name="lastName" required
+                                  <input #lastNameInput="ngModel" [(ngModel)]="user.lastName"  type="text" name="lastName" required ngModel
                                          class="form-control">
                                 </div>
                               </div>
@@ -64,7 +64,7 @@
                               <div class="col">
                                 <div class="form-group">
                                   <label>Username</label>
-                                  <input [value]="user.username" type="text" name="username" required
+                                  <input #usernameInput="ngModel" [(ngModel)]="user.username" type="text" name="username" required ngModel
                                          class="form-control">
                                 </div>
                               </div>
@@ -73,7 +73,7 @@
                               <div class="col">
                                 <div class="form-group">
                                   <label>Email</label>
-                                  <input [value]="user.email" type="text" name="email" required
+                                  <input #emailInput="ngModel" [(ngModel)]="user.email" type="text" name="email" required ngModel
                                          class="form-control">
                                 </div>
                               </div>
@@ -82,8 +82,8 @@
                               <div class="col mb-3">
                                 <div class="form-group">
                                   <label>Role</label><small> (read only)</small>
-                                  <select disabled name="role" required class="form-control">
-                                    <option value="USER">{{user.role}}</option>
+                                  <select #roleInput="ngModel" [(ngModel)]="user.role" name="role" required ngModel class="form-control">
+                                    <option>{{user.role}}</option>
                                   </select>
                                 </div>
                               </div>
@@ -97,11 +97,11 @@
                               <div class="col">
                                 <div class="custom-controls-stacked px-2">
                                   <div class="custom-control custom-checkbox">
-                                    <input disabled checked name="active" type="checkbox" class="custom-control-input">
+                                    <input #activeInput="ngModel" ngModel checked name="isActive" value="true" [(ngModel)]="user.isActive" type="checkbox" class="custom-control-input">
                                     <label class="custom-control-label">Active</label>
                                   </div>
                                   <div class="custom-control custom-checkbox">
-                                    <input disabled checked name="notLocked" type="checkbox"
+                                    <input #unlockedInput="ngModel" [(ngModel)]="user.isNonLocked" value="true" ngModel checked name="isNonLocked" type="checkbox"
                                             class="custom-control-input">
                                     <label class="custom-control-label">Unlocked</label>
                                   </div>
@@ -112,10 +112,10 @@
                         </div>
                         <div class="row">
                           <div class="col d-flex justify-content-end">
-                            <button class="btn btn-primary" type="submit">
-                              <i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;
-                              <span >Loading...</span>
-                              <span>Save Changes</span>
+                            <button [disabled]="profileUserForm.invalid || showLoading" class="btn btn-primary" type="submit">
+<!--                              <i class="fas fa-spinner fa-spin"></i>&nbsp;&nbsp;-->
+                              <span *ngIf="showLoading" class="text-center">Loading...</span>
+                              <span *ngIf="!showLoading" class="text-center">Save Changes</span>
                             </button>
                           </div>
                         </div>
@@ -130,7 +130,7 @@
             <div class="logout-btn-card card mb-3">
               <div class="card-body">
                 <div class="logout-btn-wrapper px-xl-3">
-                  <button class="logout-btn btn btn-block btn-secondary">
+                  <button (click)="onLogout()" class="logout-btn btn btn-block btn-secondary">
                     <span>Logout</span>
                     <fa-icon [icon]="faSignInAlt"></fa-icon>
                   </button>
@@ -149,3 +149,7 @@
     </div>
   </div>
 </div>
+
+<form enctype="multipart/form-data" style="display: none">
+  <input (change)="onFileChanged($event)" type= "file" id="file-upload" name="profile-image-input" accept="*">
+</form>
