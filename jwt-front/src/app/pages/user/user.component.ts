@@ -20,7 +20,7 @@ import {NotificationService} from "../../service/notification.service";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {JwtHelperService} from "@auth0/angular-jwt";
-import {AuthoritiesEnum} from "../../enum/authorities.enum";
+import {RoleEnum} from "../../enum/role.enum";
 
 @Component({
   selector: 'app-user',
@@ -44,6 +44,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public username: string;
   public selectedUser: User = new User();
   public updateUser: User = new User();
+  public addUser: User = new User();
   private subscriptions: Subscription[];
   private jwtService: JwtHelperService;
 
@@ -69,27 +70,42 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   public isOwner(): boolean {
-    const token: string = this.authService.getToken();
-    let jwtData = token.split('.')[1];
-    let decodedJwtJsonData = window.atob(jwtData);
-    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+    const loggedUser: User = this.authService.getUserFromLocalCache();
+    return loggedUser.role === RoleEnum.OWNER.toString();
+  }
 
-    return decodedJwtData.Authorities.find((auth: string) => auth === AuthoritiesEnum.DELETE.toString());
+  public canUpdate(): boolean {
+    const loggedUser: User = this.authService.getUserFromLocalCache();
+    return loggedUser.role === RoleEnum.OWNER.toString()
+      || loggedUser.role === RoleEnum.ADMIN.toString()
+      || loggedUser.role === RoleEnum.HR
+      || loggedUser.role === RoleEnum.MANAGER;
   }
 
   public isAdmin(): boolean {
-    const token: string = this.authService.getToken();
-    let jwtData = token.split('.')[1];
-    let decodedJwtJsonData = window.atob(jwtData);
-    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+    const loggedUser: User = this.authService.getUserFromLocalCache();
+    return loggedUser.role === RoleEnum.ADMIN.toString();
+  }
 
-    return decodedJwtData.Authorities.find((auth: string) => auth === AuthoritiesEnum.UPDATE.toString());
+  public isCurrentlyLoggedUser(username: string): boolean {
+    const loggedUser: User = this.authService.getUserFromLocalCache();
+    return loggedUser.username === username;
   }
 
   public onSelectUser(selectedUser: User): void {
-    this.selectedUser = selectedUser;
-    // @ts-ignore
-    document.getElementById('openUserInfo').click();
+
+    const subscription: Subscription = this.userService.getUser(selectedUser.username).subscribe({
+      next: response => {
+        this.selectedUser = response;
+        // @ts-ignore
+        document.getElementById('openUserInfo').click();
+      },
+      error: errResponse => {
+        this.notificationService.notify(NotificationTypeEnum.ERROR, errResponse.error.message);
+      }
+    });
+
+    this.subscriptions.push(subscription);
   }
 
   public onDelete(username: string): void {
@@ -115,7 +131,6 @@ export class UserComponent implements OnInit, OnDestroy {
     const users: User[] = [];
     this.userService.getUsers().subscribe({
       next: response => {
-        this.notificationService.notify(NotificationTypeEnum.SUCCESS, `Successfully fetched ${response.length} entries!`);
         response.forEach(user => users.push(user));
       },
       error: errorResponse => {
@@ -123,5 +138,10 @@ export class UserComponent implements OnInit, OnDestroy {
       }
     });
     return users;
+  }
+
+  public onAddUserClick(): void {
+    // @ts-ignore
+    document.getElementById('addUserBtn').click();
   }
 }

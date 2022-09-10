@@ -8,10 +8,10 @@
             <h2 class="table-heading">User <b>Management</b></h2>
           </div>
           <div class="col-sm-7">
-            <a href="#" class="btn btn-secondary fa-plus">
+            <a (click)="onAddUserClick()" id="addUserBtn" href="javascript:void(0)" class="btn btn-secondary fa-plus" data-toggle="modal" data-target="#addUserModal">
               <fa-icon [icon]="faPlus"></fa-icon>
               <span>Add New User</span></a>
-            <a href="#" class="btn btn-secondary excel-btn">
+            <a href="javascript:void(0)" class="btn btn-secondary excel-btn">
               <fa-icon [icon]="faExcel"></fa-icon>
               <span>Export to Excel</span></a>
           </div>
@@ -43,10 +43,10 @@
           <td>
             <div class="btn-group">
 
-            <button *ngIf="isOwner() || isAdmin()" (click)="onUpdate(user)" class="btn" style="color: #2196F3;" title="Settings" data-toggle="tooltip">
+            <button *ngIf="canUpdate()" (click)="onUpdate(user)" class="btn" style="color: #2196F3;" title="Settings" data-toggle="tooltip">
               <fa-icon [icon]="faWrench"></fa-icon>
             </button>
-            <button *ngIf="isOwner()" (click)="onDelete(user.username)" class="btn text-danger" title="Delete" data-toggle="tooltip">
+            <button *ngIf="isOwner() && !isCurrentlyLoggedUser(user.username)" (click)="onDelete(user.username)" class="btn text-danger" title="Delete" data-toggle="tooltip">
 <!--              delete #2196F3-->
               <fa-icon [icon]="faTrash"></fa-icon>
             </button>
@@ -64,3 +64,4 @@
 
 <app-user-modal [selectedUser]="selectedUser"></app-user-modal>
 <app-user-update [updateUser]="updateUser"></app-user-update>
+<app-user-add [addUser]="addUser"></app-user-add>

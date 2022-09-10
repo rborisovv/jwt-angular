@@ -3,10 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center">Edit {{updateUser?.firstName}}
-          {{updateUser?.lastName}} <small>
-            (read only)
-          </small></h5>
+        <h5 class="modal-title text-center">Edit {{updateUser?.firstName}} {{updateUser?.lastName}}</h5>
         <a type="button" class="close close-update-modal" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </a>
@@ -54,16 +51,12 @@
             <fieldset class="form-group">
               <div class="form-check">
                 <label class="form-check-label">
-                  <input checked name="active" type="checkbox"
-                         class="form-check-input">
-                  Acitve <small>(read only)</small>
+                  <input [checked]="updateUser.isActive" name="isActive" ngModel type="checkbox" class="form-check-input">Acitve
                 </label>
               </div>
               <div class="form-check disabled">
                 <label class="form-check-label">
-                  <input checked name="locked" type="checkbox"
-                         class="form-check-input">
-                  Unlocked <small>(read only)</small>
+                  <input [checked]="updateUser.isNonLocked" name="isNonLocked" ngModel type="checkbox" class="form-check-input">Unlocked
                 </label>
               </div>
             </fieldset>
@@ -71,7 +64,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeupdateUserModalButton">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeupdateUserModalButton">Close
+        </button>
         <button type="submit" form="update-form" class="btn btn-primary">Save changes</button>
       </div>
     </div>

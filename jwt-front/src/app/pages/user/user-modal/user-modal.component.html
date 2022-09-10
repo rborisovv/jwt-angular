@@ -58,17 +58,11 @@
                 <fa-icon [icon]="faShieldAlt"></fa-icon>
               </li>
               <li class="list-group-item">
-                    <span *ngIf="!selectedUser.isNonLocked || !selectedUser.isActive">
-                      AccountStatus
-                      </span>
+                    <span>Account Status</span>
                 <span *ngIf="!selectedUser.isNonLocked || !selectedUser.isActive">
                       <fa-icon [icon]="faLock" style="color: red;"></fa-icon>
                       Account Locked
                     </span>
-
-                <span *ngIf="selectedUser.isNonLocked && selectedUser.isActive">
-                  Account Status
-                  </span>
                 <span *ngIf="selectedUser.isNonLocked && selectedUser.isActive">
                     <fa-icon [icon]="faUnlock" style="color: green;"></fa-icon>
                     Unlocked

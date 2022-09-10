@@ -19,6 +19,7 @@ import { UserProfileComponent } from './pages/user/user-profile/user-profile.com
 import { HeaderComponent } from './pages/common/header/header.component';
 import { UserModalComponent } from './pages/user/user-modal/user-modal.component';
 import { UserUpdateComponent } from './pages/user/user-update/user-update.component';
+import { UserAddComponent } from './pages/user/user-add/user-add.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserUpdateComponent } from './pages/user/user-update/user-update.compon
     UserProfileComponent,
     HeaderComponent,
     UserModalComponent,
-    UserUpdateComponent
+    UserUpdateComponent,
+    UserAddComponent
   ],
   imports: [
     BrowserModule,

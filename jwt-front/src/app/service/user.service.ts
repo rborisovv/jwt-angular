@@ -16,7 +16,7 @@ export class UserService {
   }
 
   public getUser(username: string): Observable<User> {
-    return this.http.get<User>(`${this.apiHost}/find/${username}`);
+    return this.http.get<User>(`${this.apiHost}/user/find/${username}`);
   }
 
   public getUsers(): Observable<User[]> {
@@ -48,7 +48,7 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  public createUserFormData(loggedInUsername: string, user: User, profileImage: File): FormData {
+  public createUserFormData(loggedInUsername: string, user: User, profileImage: File | string): FormData {
     const formData = new FormData();
     formData.append('currentUsername', loggedInUsername);
     formData.append('firstName', user.firstName);

@@ -1,7 +1,7 @@
 export enum RoleEnum {
-  USER,
-  HR,
-  MANAGER,
-  ADMIN,
-  OWNER
+  USER="USER",
+  HR="HR",
+  MANAGER="MANAGER",
+  ADMIN="ADMIN",
+  OWNER="OWNER"
 }

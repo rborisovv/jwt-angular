@@ -30,12 +30,14 @@ export class UserUpdateComponent implements OnInit, OnDestroy {
   }
 
   public onUserUpdate(user: User): void {
+    console.log(user)
     const cachedUser: User = this.authService.getUserFromLocalCache();
     const formData: FormData = this.userService.createUserFormData(cachedUser.username, user, this.profilePicture);
     const subscription: Subscription = this.userService.updateUser(formData).subscribe({
       next: response => {
         this.notificationService.notify(NotificationTypeEnum.SUCCESS, `Successfully updated user ${response.username}!`);
         if (this.profilePicture) {
+          this.authService.addUserToLocalCache(response);
           window.location.reload();
         }
       }, error: () => {
