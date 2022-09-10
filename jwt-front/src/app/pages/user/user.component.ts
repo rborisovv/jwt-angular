@@ -42,23 +42,25 @@ export class UserComponent implements OnInit, OnDestroy {
 
   public users: User[];
   public username: string;
-  public selectedUser: User = new User();
-  public updateUser: User = new User();
+  public pageTitle: string;
+  public selectedUser: User;
+  public loggedUser: User;
+  public updateUser: User;
   public addUser: User = new User();
   private subscriptions: Subscription[];
   private jwtService: JwtHelperService;
 
   constructor(private router: Router, private authService: AuthService,
               private userService: UserService, private notificationService: NotificationService) {
-    this.users = this.fetchUsers();
-    this.subscriptions = [];
-    this.jwtService = new JwtHelperService();
-    this.username = this.obtainSubjectFromToken();
-  }
 
-  private obtainSubjectFromToken(): string {
-    const token: string = this.authService.getToken();
-    return this.jwtService.decodeToken(token).sub;
+    this.subscriptions = [];
+    this.users = this.fetchUsers();
+    this.selectedUser = new User();
+    this.pageTitle = 'Users';
+    this.loggedUser = this.authService.getUserFromLocalCache();
+    this.username = this.loggedUser.username;
+    this.updateUser = new User();
+    this.jwtService = new JwtHelperService();
   }
 
   ngOnInit(): void {
@@ -70,26 +72,28 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   public isOwner(): boolean {
-    const loggedUser: User = this.authService.getUserFromLocalCache();
-    return loggedUser.role === RoleEnum.OWNER.toString();
+    return this.loggedUser.role === RoleEnum.OWNER.toString();
   }
 
   public canUpdate(): boolean {
-    const loggedUser: User = this.authService.getUserFromLocalCache();
-    return loggedUser.role === RoleEnum.OWNER.toString()
-      || loggedUser.role === RoleEnum.ADMIN.toString()
-      || loggedUser.role === RoleEnum.HR
-      || loggedUser.role === RoleEnum.MANAGER;
+    return this.loggedUser.role === RoleEnum.OWNER.toString()
+      || this.loggedUser.role === RoleEnum.ADMIN.toString()
+      || this.loggedUser.role === RoleEnum.HR
+      || this.loggedUser.role === RoleEnum.MANAGER;
+  }
+
+  public canCreate(): boolean {
+    return this.loggedUser.role === RoleEnum.OWNER.toString()
+      || this.loggedUser.role === RoleEnum.ADMIN.toString()
+      || this.loggedUser.role === RoleEnum.HR;
   }
 
   public isAdmin(): boolean {
-    const loggedUser: User = this.authService.getUserFromLocalCache();
-    return loggedUser.role === RoleEnum.ADMIN.toString();
+    return this.loggedUser.role === RoleEnum.ADMIN.toString();
   }
 
   public isCurrentlyLoggedUser(username: string): boolean {
-    const loggedUser: User = this.authService.getUserFromLocalCache();
-    return loggedUser.username === username;
+    return this.loggedUser.username === username;
   }
 
   public onSelectUser(selectedUser: User): void {
@@ -129,7 +133,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
   private fetchUsers(): User[] {
     const users: User[] = [];
-    this.userService.getUsers().subscribe({
+    const subscription: Subscription = this.userService.getUsers().subscribe({
       next: response => {
         response.forEach(user => users.push(user));
       },
@@ -137,11 +141,19 @@ export class UserComponent implements OnInit, OnDestroy {
         this.notificationService.notify(NotificationTypeEnum.ERROR, errorResponse.error.message);
       }
     });
+
+    this.subscriptions.push(subscription);
+
     return users;
   }
 
   public onAddUserClick(): void {
     // @ts-ignore
     document.getElementById('addUserBtn').click();
+  }
+
+  public fetchUpdatedUsers(users: User[]): void {
+    this.users = [];
+    this.users = users;
   }
 }

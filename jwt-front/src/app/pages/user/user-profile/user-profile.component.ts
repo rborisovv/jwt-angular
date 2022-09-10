@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[];
   public file!: File;
   public showLoading: boolean;
+  public pageTitle: string;
 
   constructor(private userService: UserService, private authService: AuthService, private router: Router) {
     this.user = this.obtainCurrUserData();
@@ -30,6 +31,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.authorities = this.obtainUserAuthorities();
     this.showLoading = false;
     this.subscriptions = [];
+    this.pageTitle = 'Profile';
   }
 
   ngOnInit(): void {

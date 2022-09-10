@@ -8,8 +8,9 @@ import {faCogs, faUser, faUsers} from '@fortawesome/free-solid-svg-icons';
 })
 export class HeaderComponent implements OnInit {
 
-  @Input() username: string = '';
-  @Input() navStyle: string = '';
+  @Input() public username: string = '';
+  @Input() public pageTitle: string = '';
+  public navWidth!: string;
 
   faUsers = faUsers;
   faUser = faUser;
@@ -19,6 +20,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.pageTitle === 'Users') {
+      this.navWidth = 'width: 100% !important;';
+    }
   }
 
 }

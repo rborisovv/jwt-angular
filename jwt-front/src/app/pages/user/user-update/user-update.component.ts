@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {User} from "../../../model/user";
 import {UserService} from "../../../service/user.service";
 import {AuthService} from "../../../service/auth.service";
@@ -14,6 +14,10 @@ import {Subscription} from "rxjs";
 export class UserUpdateComponent implements OnInit, OnDestroy {
 
   @Input() public updateUser: User = new User();
+  @Input() public users: User[] = [];
+
+  @Output() public updatedUsers = new EventEmitter<User[]>();
+
   public profilePicture!: File;
   private subscriptions: Subscription[];
 
@@ -30,16 +34,20 @@ export class UserUpdateComponent implements OnInit, OnDestroy {
   }
 
   public onUserUpdate(user: User): void {
-    console.log(user)
     const cachedUser: User = this.authService.getUserFromLocalCache();
     const formData: FormData = this.userService.createUserFormData(cachedUser.username, user, this.profilePicture);
     const subscription: Subscription = this.userService.updateUser(formData).subscribe({
       next: response => {
         this.notificationService.notify(NotificationTypeEnum.SUCCESS, `Successfully updated user ${response.username}!`);
-        if (this.profilePicture) {
-          this.authService.addUserToLocalCache(response);
-          window.location.reload();
-        }
+        // if (this.profilePicture) {
+        //   this.authService.addUserToLocalCache(response);
+        //   window.location.reload();
+        // }
+        this.userService.getUsers().subscribe({
+          next: response => {
+            this.updatedUsers.emit(response);
+          }
+        });
       }, error: () => {
         this.notificationService.notify(NotificationTypeEnum.ERROR, `Error updating user ${user.username}`);
       }
