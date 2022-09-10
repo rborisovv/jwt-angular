@@ -39,10 +39,10 @@ export class UserUpdateComponent implements OnInit, OnDestroy {
     const subscription: Subscription = this.userService.updateUser(formData).subscribe({
       next: response => {
         this.notificationService.notify(NotificationTypeEnum.SUCCESS, `Successfully updated user ${response.username}!`);
-        // if (this.profilePicture) {
-        //   this.authService.addUserToLocalCache(response);
-        //   window.location.reload();
-        // }
+        if (this.profilePicture) {
+          this.authService.addUserToLocalCache(response);
+          window.location.reload();
+        }
         this.userService.getUsers().subscribe({
           next: response => {
             this.updatedUsers.emit(response);
